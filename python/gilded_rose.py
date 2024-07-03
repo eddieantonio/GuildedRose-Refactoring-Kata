@@ -54,11 +54,10 @@ class BackstagePassUpdater(DefaultUpdater):
             return
 
         item.quality = item.quality + 1
-        if item.sell_in < 11:
-            if item.quality < 50:
+        if item.quality < 50:
+            if item.sell_in < 11:
                 item.quality = item.quality + 1
-        if item.sell_in < 6:
-            if item.quality < 50:
+            if item.sell_in < 6:
                 item.quality = item.quality + 1
 
     def adjust_quality_post_sell_date(item):
