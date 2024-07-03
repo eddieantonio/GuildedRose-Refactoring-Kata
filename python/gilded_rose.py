@@ -13,19 +13,17 @@ class GildedRose(object):
                 "Sulfuras, Hand of Ragnaros": LegendaryItemUpdater,
                 "Aged Brie": AgedBrieUpdater,
                 "Backstage passes to a TAFKAL80ETC concert": BackstagePassUpdater,
-            }.get(item.name, DefaultUpdater)
+            }.get(item.name, DefaultUpdater)()
             updater.change_all(item)
 
 
 class DefaultUpdater:
-    @classmethod
-    def change_all(cls, item):
+    def change_all(self, item):
         item.sell_in -= 1
-        change = cls.change_in_quality(item)
+        change = self.change_in_quality(item)
         item.quality = clamp(item.quality + change, lower=0, upper=MAX_QUALITY)
 
-    @classmethod
-    def change_in_quality(cls, item):
+    def change_in_quality(self, item):
         if item.sell_in >= 0:
             return -1
         else:
@@ -33,14 +31,13 @@ class DefaultUpdater:
 
 
 class LegendaryItemUpdater:
-    def change_all(item):
+    def change_all(self, item):
         "Legendary items do not change in quality or sell-in time"
         pass
 
 
 class AgedBrieUpdater(DefaultUpdater):
-    @classmethod
-    def change_in_quality(cls, item):
+    def change_in_quality(self, item):
         if item.sell_in >= 0:
             return +1
         else:
@@ -48,8 +45,7 @@ class AgedBrieUpdater(DefaultUpdater):
 
 
 class BackstagePassUpdater(DefaultUpdater):
-    @classmethod
-    def change_in_quality(cls, item):
+    def change_in_quality(self, item):
         if item.sell_in < 0:
             return -item.quality
         elif item.sell_in < 5:
