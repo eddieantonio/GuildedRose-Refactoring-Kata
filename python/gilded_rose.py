@@ -10,33 +10,31 @@ class GildedRose(object):
             update_item_quality(item)
 
 
-def update_item_quality(item):
-    """
-    Apply the update rule for the day.
-    """
+class DefaultUpdater:
+    @staticmethod
+    def apply_initial_quality_change(item):
+        if is_item_that_appreciates(item):
+            if item.quality < 50:
+                item.quality = item.quality + 1
+                if item.name == "Backstage passes to a TAFKAL80ETC concert":
+                    if item.sell_in < 11:
+                        if item.quality < 50:
+                            item.quality = item.quality + 1
+                    if item.sell_in < 6:
+                        if item.quality < 50:
+                            item.quality = item.quality + 1
+        else:
+            if item.quality > 0:
+                if item.name != "Sulfuras, Hand of Ragnaros":
+                    item.quality = item.quality - 1
 
-    # Apply quality change
-    if is_item_that_appreciates(item):
-        if item.quality < 50:
-            item.quality = item.quality + 1
-            if item.name == "Backstage passes to a TAFKAL80ETC concert":
-                if item.sell_in < 11:
-                    if item.quality < 50:
-                        item.quality = item.quality + 1
-                if item.sell_in < 6:
-                    if item.quality < 50:
-                        item.quality = item.quality + 1
-    else:
-        if item.quality > 0:
-            if item.name != "Sulfuras, Hand of Ragnaros":
-                item.quality = item.quality - 1
+    @staticmethod
+    def reduce_sell_by_date(item):
+        if item.name != "Sulfuras, Hand of Ragnaros":
+            item.sell_in = item.sell_in - 1
 
-    # Apply sell_by change
-    if item.name != "Sulfuras, Hand of Ragnaros":
-        item.sell_in = item.sell_in - 1
-
-    # Adjust quality after sell by date
-    if item.sell_in < 0:
+    @staticmethod
+    def adjust_quality_post_sell_date(item):
         if item.name != "Aged Brie":
             if item.name != "Backstage passes to a TAFKAL80ETC concert":
                 if item.quality > 0:
@@ -47,6 +45,25 @@ def update_item_quality(item):
         else:
             if item.quality < 50:
                 item.quality = item.quality + 1
+
+
+def update_item_quality(item):
+    """
+    Apply the update rule for the day.
+    """
+
+    updater = DefaultUpdater
+
+    # Apply quality change
+    updater.apply_initial_quality_change(item)
+
+    # Apply sell_by change
+    updater.reduce_sell_by_date(item)
+
+    # Adjust quality after sell by date
+    if item.sell_in < 0:
+        # We need to sell it!
+        updater.adjust_quality_post_sell_date(item)
 
 
 def is_item_that_appreciates(item):
