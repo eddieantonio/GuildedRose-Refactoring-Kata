@@ -14,10 +14,7 @@ def update_item_quality(item):
     """
     Apply the update rule for the day.
     """
-    if (
-        item.name != "Aged Brie"
-        and item.name != "Backstage passes to a TAFKAL80ETC concert"
-    ):
+    if not is_item_that_appreciates(item):
         if item.quality > 0:
             if item.name != "Sulfuras, Hand of Ragnaros":
                 item.quality = item.quality - 1
@@ -44,6 +41,13 @@ def update_item_quality(item):
         else:
             if item.quality < 50:
                 item.quality = item.quality + 1
+
+
+def is_item_that_appreciates(item):
+    return (
+        item.name == "Aged Brie"
+        or item.name == "Backstage passes to a TAFKAL80ETC concert"
+    )
 
 
 class Item:
