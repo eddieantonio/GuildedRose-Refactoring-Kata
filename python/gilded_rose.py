@@ -18,15 +18,21 @@ class GildedRose(object):
 
 
 class DefaultUpdater:
-    def change_all(item):
-        if item.quality > 0:
-            item.quality = item.quality - 1
+    @classmethod
+    def change_all(cls, item):
+        item.sell_in = cls.new_sell_in(item)
+        item.quality = max(0, min(MAX_QUALITY, cls.new_quality(item)))
 
-        item.sell_in = item.sell_in - 1
+    @classmethod
+    def new_sell_in(cls, item):
+        return item.sell_in - 1
 
-        if item.sell_in < 0:
-            if item.quality > 0:
-                item.quality = item.quality - 1
+    @classmethod
+    def new_quality(cls, item):
+        if item.sell_in >= 0:
+            return item.quality - 1
+        else:
+            return item.quality - 2
 
 
 class LegendaryItemUpdater:
