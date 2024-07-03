@@ -18,7 +18,7 @@ class GildedRose(object):
                 ),
             }.get(item.name, (default_change_policy, default_change_in_quality))
 
-            if item.name.startswith("Charmed "):
+            if item.name.startswith("Conjured "):
                 change_in_quality = decorate_with_double(change_in_quality)
 
             apply_policy(item, change_in_quality)

@@ -14,18 +14,18 @@ class GildedRoseTest(unittest.TestCase):
         self.assertEqual(9, items[0].quality)
 
     def test_charmed_item(self):
-        items = [Item("Charmed Grog", 1, 10)]
+        items = [Item("Conjured Grog", 1, 10)]
         gilded_rose = GildedRose(items)
         gilded_rose.update_quality()
-        self.assertEqual("Charmed Grog", items[0].name)
+        self.assertEqual("Conjured Grog", items[0].name)
         self.assertEqual(0, items[0].sell_in)
         self.assertEqual(8, items[0].quality)
 
     def test_charmed_brie(self):
-        items = [Item("Charmed Aged Brie", 1, 10)]
+        items = [Item("Conjured Aged Brie", 1, 10)]
         gilded_rose = GildedRose(items)
         gilded_rose.update_quality()
-        self.assertEqual("Charmed Aged Brie", items[0].name)
+        self.assertEqual("Conjured Aged Brie", items[0].name)
         self.assertEqual(0, items[0].sell_in)
         self.assertEqual(6, items[0].quality)
 
