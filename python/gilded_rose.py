@@ -10,8 +10,8 @@ class GildedRose(object):
     def update_quality(self):
         for item in self.items:
             updater = {
-                # So far, only one special cass:
                 "Sulfuras, Hand of Ragnaros": LegendaryItemUpdater,
+                "Aged Brie": AgedBrieUpdater,
             }.get(item.name, DefaultUpdater)
             updater.change_all(item)
 
@@ -51,6 +51,18 @@ class LegendaryItemUpdater:
     def change_all(item):
         "Legendary items do not change in quality or sell-in time"
         pass
+
+
+class AgedBrieUpdater:
+    def change_all(item):
+        if item.quality < MAX_QUALITY:
+            item.quality = item.quality + 1
+
+        item.sell_in = item.sell_in - 1
+
+        if item.sell_in < 0:
+            if item.quality < MAX_QUALITY:
+                item.quality = item.quality + 1
 
 
 class Item:
