@@ -22,12 +22,9 @@ class DefaultUpdater:
 
     @staticmethod
     def adjust_quality_post_sell_date(item):
-        if item.name == "Backstage passes to a TAFKAL80ETC concert":
-            item.quality = item.quality - item.quality
-        else:
-            if item.quality > 0:
-                if item.name != "Sulfuras, Hand of Ragnaros":
-                    item.quality = item.quality - 1
+        if item.quality > 0:
+            if item.name != "Sulfuras, Hand of Ragnaros":
+                item.quality = item.quality - 1
 
 
 class SpecialCaseUpdater(DefaultUpdater):
