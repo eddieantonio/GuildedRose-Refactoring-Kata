@@ -21,14 +21,15 @@ class DefaultUpdater:
     @classmethod
     def change_all(cls, item):
         item.sell_in -= 1
-        item.quality = clamp(cls.new_quality(item), lower=0, upper=MAX_QUALITY)
+        change = cls.change_in_quality(item)
+        item.quality = clamp(item.quality + change, lower=0, upper=MAX_QUALITY)
 
     @classmethod
-    def new_quality(cls, item):
+    def change_in_quality(cls, item):
         if item.sell_in >= 0:
-            return item.quality - 1
+            return -1
         else:
-            return item.quality - 2
+            return -2
 
 
 class LegendaryItemUpdater:
@@ -39,24 +40,24 @@ class LegendaryItemUpdater:
 
 class AgedBrieUpdater(DefaultUpdater):
     @classmethod
-    def new_quality(cls, item):
+    def change_in_quality(cls, item):
         if item.sell_in >= 0:
-            return item.quality + 1
+            return +1
         else:
-            return item.quality + 2
+            return +2
 
 
 class BackstagePassUpdater(DefaultUpdater):
     @classmethod
-    def new_quality(cls, item):
+    def change_in_quality(cls, item):
         if item.sell_in < 0:
-            return 0
+            return -item.quality
         elif item.sell_in < 5:
-            return item.quality + 3
+            return +3
         elif item.sell_in < 10:
-            return item.quality + 2
+            return +2
         else:
-            return item.quality + 1
+            return +1
 
 
 def clamp(value, *, lower=float("-inf"), upper=float("inf")):
