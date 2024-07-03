@@ -63,12 +63,21 @@ class AppreciateWithAgeUpdater(SpecialCaseUpdater):
                         item.quality = item.quality + 1
 
 
+class AgedBrieUpdater(AppreciateWithAgeUpdater):
+    pass
+
+
+class BackstagePassUpdater(AppreciateWithAgeUpdater):
+    pass
+
+
 class SulfurasHandOfRaggnarosUpdater(SpecialCaseUpdater):
     @staticmethod
     def apply_initial_quality_change(item):
         "Legendary item does not decrease in quality."
         pass
 
+    @staticmethod
     def reduce_sell_by_date(item):
         "Legendary item does not decrease its sell-in date."
         pass
@@ -80,8 +89,8 @@ def update_item_quality(item):
     """
 
     updater = {
-        "Backstage passes to a TAFKAL80ETC concert": AppreciateWithAgeUpdater,
-        "Aged Brie": AppreciateWithAgeUpdater,
+        "Backstage passes to a TAFKAL80ETC concert": BackstagePassUpdater,
+        "Aged Brie": AgedBrieUpdater,
         "Sulfuras, Hand of Ragnaros": SulfurasHandOfRaggnarosUpdater,
     }.get(item.name, DefaultUpdater)
 
