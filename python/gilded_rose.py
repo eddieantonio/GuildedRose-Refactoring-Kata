@@ -30,10 +30,7 @@ class SpecialCaseUpdater(DefaultUpdater):
     @staticmethod
     def adjust_quality_post_sell_date(item):
         if item.quality > 0:
-            if item.name == "Sulfuras, Hand of Ragnaros":
-                pass
-            else:
-                item.quality = item.quality - 1
+            item.quality = item.quality - 1
 
 
 class AppreciateWithAgeUpdater(SpecialCaseUpdater):
@@ -70,6 +67,10 @@ class SulfurasHandOfRaggnarosUpdater(SpecialCaseUpdater):
     @staticmethod
     def reduce_sell_by_date(item):
         "Legendary item does not decrease its sell-in date."
+        pass
+
+    @staticmethod
+    def adjust_quality_post_sell_date(item):
         pass
 
 
