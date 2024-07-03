@@ -36,23 +36,6 @@ class DefaultUpdater:
 
 class SpecialCaseUpdater(DefaultUpdater):
     @staticmethod
-    def apply_initial_quality_change(item):
-        if is_item_that_appreciates(item):
-            if item.quality < 50:
-                item.quality = item.quality + 1
-                if item.name == "Backstage passes to a TAFKAL80ETC concert":
-                    if item.sell_in < 11:
-                        if item.quality < 50:
-                            item.quality = item.quality + 1
-                    if item.sell_in < 6:
-                        if item.quality < 50:
-                            item.quality = item.quality + 1
-        else:
-            if item.quality > 0:
-                if item.name != "Sulfuras, Hand of Ragnaros":
-                    item.quality = item.quality - 1
-
-    @staticmethod
     def adjust_quality_post_sell_date(item):
         if item.name != "Aged Brie":
             if item.name != "Backstage passes to a TAFKAL80ETC concert":
@@ -66,7 +49,33 @@ class SpecialCaseUpdater(DefaultUpdater):
                 item.quality = item.quality + 1
 
 
+class AppreciateWithAgeUpdater(SpecialCaseUpdater):
+    @staticmethod
+    def apply_initial_quality_change(item):
+        if item.quality < 50:
+            item.quality = item.quality + 1
+            if item.name == "Backstage passes to a TAFKAL80ETC concert":
+                if item.sell_in < 11:
+                    if item.quality < 50:
+                        item.quality = item.quality + 1
+                if item.sell_in < 6:
+                    if item.quality < 50:
+                        item.quality = item.quality + 1
+
+
 class SulfurasHandOfRaggnarosUpdater(SpecialCaseUpdater):
+    @staticmethod
+    def apply_initial_quality_change(item):
+        if item.quality < 50:
+            item.quality = item.quality + 1
+            if item.name == "Backstage passes to a TAFKAL80ETC concert":
+                if item.sell_in < 11:
+                    if item.quality < 50:
+                        item.quality = item.quality + 1
+                if item.sell_in < 6:
+                    if item.quality < 50:
+                        item.quality = item.quality + 1
+
     def reduce_sell_by_date(item):
         "Legendary item does not decrease its sell-in date."
         pass
@@ -78,8 +87,8 @@ def update_item_quality(item):
     """
 
     updater = {
-        "Backstage passes to a TAFKAL80ETC concert": SpecialCaseUpdater,
-        "Aged Brie": SpecialCaseUpdater,
+        "Backstage passes to a TAFKAL80ETC concert": AppreciateWithAgeUpdater,
+        "Aged Brie": AppreciateWithAgeUpdater,
         "Sulfuras, Hand of Ragnaros": SulfurasHandOfRaggnarosUpdater,
     }.get(item.name, DefaultUpdater)
 
