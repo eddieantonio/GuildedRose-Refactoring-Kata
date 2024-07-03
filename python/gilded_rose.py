@@ -72,6 +72,12 @@ class SpecialCaseUpdater:
                 item.quality = item.quality + 1
 
 
+class SulfurasHandOfRaggnarosUpdater(SpecialCaseUpdater):
+    def reduce_sell_by_date(item):
+        if item.name != "Sulfuras, Hand of Ragnaros":
+            item.sell_in = item.sell_in - 1
+
+
 def update_item_quality(item):
     """
     Apply the update rule for the day.
@@ -80,7 +86,7 @@ def update_item_quality(item):
     updater = {
         "Backstage passes to a TAFKAL80ETC concert": SpecialCaseUpdater,
         "Aged Brie": SpecialCaseUpdater,
-        "Sulfuras, Hand of Ragnaros": SpecialCaseUpdater,
+        "Sulfuras, Hand of Ragnaros": SulfurasHandOfRaggnarosUpdater,
     }.get(item.name, DefaultUpdater)
 
     # Apply quality change
