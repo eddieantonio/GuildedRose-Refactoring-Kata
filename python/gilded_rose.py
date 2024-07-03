@@ -18,8 +18,7 @@ class DefaultUpdater:
 
     @staticmethod
     def reduce_sell_by_date(item):
-        if item.name != "Sulfuras, Hand of Ragnaros":
-            item.sell_in = item.sell_in - 1
+        item.sell_in = item.sell_in - 1
 
     @staticmethod
     def adjust_quality_post_sell_date(item):
@@ -35,7 +34,7 @@ class DefaultUpdater:
                 item.quality = item.quality + 1
 
 
-class SpecialCaseUpdater:
+class SpecialCaseUpdater(DefaultUpdater):
     @staticmethod
     def apply_initial_quality_change(item):
         if is_item_that_appreciates(item):
@@ -54,11 +53,6 @@ class SpecialCaseUpdater:
                     item.quality = item.quality - 1
 
     @staticmethod
-    def reduce_sell_by_date(item):
-        if item.name != "Sulfuras, Hand of Ragnaros":
-            item.sell_in = item.sell_in - 1
-
-    @staticmethod
     def adjust_quality_post_sell_date(item):
         if item.name != "Aged Brie":
             if item.name != "Backstage passes to a TAFKAL80ETC concert":
@@ -74,8 +68,8 @@ class SpecialCaseUpdater:
 
 class SulfurasHandOfRaggnarosUpdater(SpecialCaseUpdater):
     def reduce_sell_by_date(item):
-        if item.name != "Sulfuras, Hand of Ragnaros":
-            item.sell_in = item.sell_in - 1
+        "Legendary item does not decrease its sell-in date."
+        pass
 
 
 def update_item_quality(item):
