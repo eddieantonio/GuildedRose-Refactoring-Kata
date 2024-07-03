@@ -41,16 +41,13 @@ class LegendaryItemUpdater:
         pass
 
 
-class AgedBrieUpdater:
-    def change_all(item):
-        if item.quality < MAX_QUALITY:
-            item.quality = item.quality + 1
-
-        item.sell_in = item.sell_in - 1
-
-        if item.sell_in < 0:
-            if item.quality < MAX_QUALITY:
-                item.quality = item.quality + 1
+class AgedBrieUpdater(DefaultUpdater):
+    @classmethod
+    def new_quality(cls, item):
+        if item.sell_in >= 0:
+            return item.quality + 1
+        else:
+            return item.quality + 2
 
 
 class BackstagePassUpdater:
