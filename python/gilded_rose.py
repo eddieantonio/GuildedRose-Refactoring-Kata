@@ -40,14 +40,16 @@ class AgedBrieUpdater(DefaultUpdater):
 class BackstagePassUpdater(DefaultUpdater):
     @staticmethod
     def apply_initial_quality_change(item):
-        if item.quality < 50:
-            item.quality = item.quality + 1
-            if item.sell_in < 11:
-                if item.quality < 50:
-                    item.quality = item.quality + 1
-            if item.sell_in < 6:
-                if item.quality < 50:
-                    item.quality = item.quality + 1
+        if item.quality >= 50:
+            return
+
+        item.quality = item.quality + 1
+        if item.sell_in < 11:
+            if item.quality < 50:
+                item.quality = item.quality + 1
+        if item.sell_in < 6:
+            if item.quality < 50:
+                item.quality = item.quality + 1
 
     def adjust_quality_post_sell_date(item):
         item.quality = item.quality - item.quality
