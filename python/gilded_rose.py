@@ -14,6 +14,8 @@ class GildedRose(object):
                 "Aged Brie": AgedBrieUpdater,
                 "Backstage passes to a TAFKAL80ETC concert": BackstagePassUpdater,
             }.get(item.name, DefaultUpdater)()
+            if item.name.startswith("Charmed "):
+                updater = CharmedUpdaterDecorator(updater)
             updater.change_all(item)
 
 
@@ -54,6 +56,14 @@ class BackstagePassUpdater(DefaultUpdater):
             return +2
         else:
             return +1
+
+
+class CharmedUpdaterDecorator(DefaultUpdater):
+    def __init__(self, updater):
+        self._wrapped = updater
+
+    def change_in_quality(self, item):
+        return 2 * self._wrapped.change_in_quality(item)
 
 
 def clamp(value, *, lower=float("-inf"), upper=float("inf")):
