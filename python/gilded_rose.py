@@ -9,19 +9,24 @@ class GildedRose(object):
 
     def update_quality(self):
         for item in self.items:
-            apply_policy, change_in_quality = {
-                "Sulfuras, Hand of Ragnaros": (legendary_item_change_policy, ...),
-                "Aged Brie": (default_change_policy, better_with_age_change_in_quality),
-                "Backstage passes to a TAFKAL80ETC concert": (
-                    default_change_policy,
-                    backstage_pass_change_in_quality,
-                ),
-            }.get(item.name, (default_change_policy, default_change_in_quality))
-
-            if item.name.startswith("Conjured "):
-                change_in_quality = decorate_with_double(change_in_quality)
-
+            apply_policy, change_in_quality = determine_policy(item.name)
             apply_policy(item, change_in_quality)
+
+
+def determine_policy(item_name):
+    apply_policy, change_in_quality = {
+        "Sulfuras, Hand of Ragnaros": (legendary_item_change_policy, ...),
+        "Aged Brie": (default_change_policy, better_with_age_change_in_quality),
+        "Backstage passes to a TAFKAL80ETC concert": (
+            default_change_policy,
+            backstage_pass_change_in_quality,
+        ),
+    }.get(item_name, (default_change_policy, default_change_in_quality))
+
+    if item_name.startswith("Conjured "):
+        change_in_quality = decorate_with_double(change_in_quality)
+
+    return apply_policy, change_in_quality
 
 
 def default_change_policy(item, change_in_quality):
