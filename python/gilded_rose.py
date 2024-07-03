@@ -78,13 +78,6 @@ class SulfurasHandOfRaggnarosUpdater(DefaultUpdater):
         pass
 
 
-def is_item_that_appreciates(item):
-    return (
-        item.name == "Aged Brie"
-        or item.name == "Backstage passes to a TAFKAL80ETC concert"
-    )
-
-
 class Item:
     def __init__(self, name, sell_in, quality):
         self.name = name
