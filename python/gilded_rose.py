@@ -31,13 +31,6 @@ class AppreciateWithAgeUpdater(DefaultUpdater):
     def apply_initial_quality_change(item):
         if item.quality < 50:
             item.quality = item.quality + 1
-            if item.name == "Backstage passes to a TAFKAL80ETC concert":
-                if item.sell_in < 11:
-                    if item.quality < 50:
-                        item.quality = item.quality + 1
-                if item.sell_in < 6:
-                    if item.quality < 50:
-                        item.quality = item.quality + 1
 
 
 class AgedBrieUpdater(AppreciateWithAgeUpdater):
@@ -47,6 +40,17 @@ class AgedBrieUpdater(AppreciateWithAgeUpdater):
 
 
 class BackstagePassUpdater(AppreciateWithAgeUpdater):
+    @staticmethod
+    def apply_initial_quality_change(item):
+        if item.quality < 50:
+            item.quality = item.quality + 1
+            if item.sell_in < 11:
+                if item.quality < 50:
+                    item.quality = item.quality + 1
+            if item.sell_in < 6:
+                if item.quality < 50:
+                    item.quality = item.quality + 1
+
     def adjust_quality_post_sell_date(item):
         item.quality = item.quality - item.quality
 
