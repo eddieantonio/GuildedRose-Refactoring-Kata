@@ -66,15 +66,8 @@ class AppreciateWithAgeUpdater(SpecialCaseUpdater):
 class SulfurasHandOfRaggnarosUpdater(SpecialCaseUpdater):
     @staticmethod
     def apply_initial_quality_change(item):
-        if item.quality < 50:
-            item.quality = item.quality + 1
-            if item.name == "Backstage passes to a TAFKAL80ETC concert":
-                if item.sell_in < 11:
-                    if item.quality < 50:
-                        item.quality = item.quality + 1
-                if item.sell_in < 6:
-                    if item.quality < 50:
-                        item.quality = item.quality + 1
+        "Legendary item does not decrease in quality."
+        pass
 
     def reduce_sell_by_date(item):
         "Legendary item does not decrease its sell-in date."
