@@ -9,67 +9,62 @@ class GildedRose(object):
 
     def update_quality(self):
         for item in self.items:
-            updater = {
-                "Sulfuras, Hand of Ragnaros": LegendaryItemUpdater,
-                "Aged Brie": AgedBrieUpdater,
-                "Backstage passes to a TAFKAL80ETC concert": BackstagePassUpdater,
-            }.get(item.name, DefaultUpdater)
+            apply_policy, change_in_quality = {
+                "Sulfuras, Hand of Ragnaros": (legendary_item_change_policy, ...),
+                "Aged Brie": (default_change_policy, better_with_age_change_in_quality),
+                "Backstage passes to a TAFKAL80ETC concert": (
+                    default_change_policy,
+                    backstage_pass_change_in_quality,
+                ),
+            }.get(item.name, (default_change_policy, default_change_in_quality))
+
             if item.name.startswith("Charmed "):
-                updater = decorate_charmed_item(updater)
+                change_in_quality = decorate_with_double(change_in_quality)
 
-            updater.change_all(item)
-
-
-class DefaultUpdater:
-    @classmethod
-    def change_all(cls, item):
-        item.sell_in -= 1
-        change = cls.change_in_quality(item)
-        item.quality = clamp(item.quality + change, lower=0, upper=MAX_QUALITY)
-
-    @classmethod
-    def change_in_quality(cls, item):
-        if item.sell_in >= 0:
-            return -1
-        else:
-            return -2
+            apply_policy(item, change_in_quality)
 
 
-class LegendaryItemUpdater:
-    def change_all(item):
-        "Legendary items do not change in quality or sell-in time"
-        pass
+def default_change_policy(item, change_in_quality):
+    item.sell_in -= 1
+    change = change_in_quality(item)
+    item.quality = clamp(item.quality + change, lower=0, upper=MAX_QUALITY)
 
 
-class AgedBrieUpdater(DefaultUpdater):
-    @classmethod
-    def change_in_quality(cls, item):
-        if item.sell_in >= 0:
-            return +1
-        else:
-            return +2
+def legendary_item_change_policy(item, _change_in_quality):
+    "Legendary items do not change in quality or sell-in time"
+    pass
 
 
-class BackstagePassUpdater(DefaultUpdater):
-    @classmethod
-    def change_in_quality(cls, item):
-        if item.sell_in < 0:
-            return -item.quality
-        elif item.sell_in < 5:
-            return +3
-        elif item.sell_in < 10:
-            return +2
-        else:
-            return +1
+def default_change_in_quality(item):
+    if item.sell_in >= 0:
+        return -1
+    else:
+        return -2
 
 
-def decorate_charmed_item(original_updater):
-    class CharmedItemUpdater(DefaultUpdater):
-        @classmethod
-        def change_in_quality(cls, item):
-            return 2 * original_updater.change_in_quality(item)
+def better_with_age_change_in_quality(item):
+    if item.sell_in >= 0:
+        return +1
+    else:
+        return +2
 
-    return CharmedItemUpdater
+
+def backstage_pass_change_in_quality(item):
+    if item.sell_in < 0:
+        return -item.quality
+    elif item.sell_in < 5:
+        return +3
+    elif item.sell_in < 10:
+        return +2
+    else:
+        return +1
+
+
+def decorate_with_double(original_change_in_quality):
+    def change_in_quality(item):
+        return 2 * original_change_in_quality(item)
+
+    return change_in_quality
 
 
 def clamp(value, *, lower=float("-inf"), upper=float("inf")):
