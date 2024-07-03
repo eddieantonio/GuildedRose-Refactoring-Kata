@@ -21,7 +21,7 @@ class DefaultUpdater:
     @classmethod
     def change_all(cls, item):
         item.sell_in = cls.new_sell_in(item)
-        item.quality = max(0, min(MAX_QUALITY, cls.new_quality(item)))
+        item.quality = clamp(cls.new_quality(item), lower=0, upper=MAX_QUALITY)
 
     @classmethod
     def new_sell_in(cls, item):
@@ -61,6 +61,11 @@ class BackstagePassUpdater(DefaultUpdater):
             return item.quality + 2
         else:
             return item.quality + 1
+
+
+def clamp(value, *, lower=float("-inf"), upper=float("inf")):
+    "Clamp the value to given inclusive range."
+    return max(lower, min(upper, value))
 
 
 class Item:
