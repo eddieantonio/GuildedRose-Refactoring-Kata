@@ -13,7 +13,17 @@ class GildedRose(object):
             apply_policy(item, change_in_quality)
 
 
-def determine_policy(item_name):
+def determine_policy(original_item_name):
+    # Figure out if it's conjured or not.
+    first_word, _, rest = original_item_name.partition(" ")
+    if first_word == "Conjured":
+        conjured = True
+        item_name = rest
+    else:
+        conjured = False
+        item_name = original_item_name
+
+    # Figure out the policy based on the item name:
     apply_policy, change_in_quality = {
         "Sulfuras, Hand of Ragnaros": (legendary_item_change_policy, ...),
         "Aged Brie": (default_change_policy, better_with_age_change_in_quality),
@@ -23,7 +33,7 @@ def determine_policy(item_name):
         ),
     }.get(item_name, (default_change_policy, default_change_in_quality))
 
-    if item_name.startswith("Conjured "):
+    if conjured:
         change_in_quality = decorate_with_double(change_in_quality)
 
     return apply_policy, change_in_quality
