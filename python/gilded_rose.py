@@ -26,14 +26,7 @@ class DefaultUpdater:
             item.quality = item.quality - 1
 
 
-class AppreciateWithAgeUpdater(DefaultUpdater):
-    @staticmethod
-    def apply_initial_quality_change(item):
-        if item.quality < 50:
-            item.quality = item.quality + 1
-
-
-class AgedBrieUpdater(AppreciateWithAgeUpdater):
+class AgedBrieUpdater(DefaultUpdater):
     @staticmethod
     def apply_initial_quality_change(item):
         if item.quality < 50:
@@ -44,7 +37,7 @@ class AgedBrieUpdater(AppreciateWithAgeUpdater):
             item.quality = item.quality + 1
 
 
-class BackstagePassUpdater(AppreciateWithAgeUpdater):
+class BackstagePassUpdater(DefaultUpdater):
     @staticmethod
     def apply_initial_quality_change(item):
         if item.quality < 50:
