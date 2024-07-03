@@ -26,11 +26,7 @@ class DefaultUpdater:
             item.quality = item.quality - 1
 
 
-class SpecialCaseUpdater(DefaultUpdater):
-    pass
-
-
-class AppreciateWithAgeUpdater(SpecialCaseUpdater):
+class AppreciateWithAgeUpdater(DefaultUpdater):
     @staticmethod
     def apply_initial_quality_change(item):
         if item.quality < 50:
@@ -55,7 +51,7 @@ class BackstagePassUpdater(AppreciateWithAgeUpdater):
         item.quality = item.quality - item.quality
 
 
-class SulfurasHandOfRaggnarosUpdater(SpecialCaseUpdater):
+class SulfurasHandOfRaggnarosUpdater(DefaultUpdater):
     @staticmethod
     def apply_initial_quality_change(item):
         "Legendary item does not decrease in quality."
