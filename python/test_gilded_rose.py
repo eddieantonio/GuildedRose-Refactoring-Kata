@@ -21,13 +21,21 @@ class GildedRoseTest(unittest.TestCase):
         self.assertEqual(0, items[0].sell_in)
         self.assertEqual(8, items[0].quality)
 
+    def test_regular_brie(self):
+        items = [Item("Aged Brie", 1, 10)]
+        gilded_rose = GildedRose(items)
+        gilded_rose.update_quality()
+        self.assertEqual("Aged Brie", items[0].name)
+        self.assertEqual(0, items[0].sell_in)
+        self.assertEqual(11, items[0].quality)
+
     def test_charmed_brie(self):
         items = [Item("Conjured Aged Brie", 1, 10)]
         gilded_rose = GildedRose(items)
         gilded_rose.update_quality()
         self.assertEqual("Conjured Aged Brie", items[0].name)
         self.assertEqual(0, items[0].sell_in)
-        self.assertEqual(6, items[0].quality)
+        self.assertEqual(12, items[0].quality)
 
 
 if __name__ == "__main__":
