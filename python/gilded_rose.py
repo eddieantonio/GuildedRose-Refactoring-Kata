@@ -11,23 +11,19 @@ class GildedRose(object):
 
 
 class DefaultUpdater:
-    @staticmethod
     def apply_initial_quality_change(item):
         if item.quality > 0:
             item.quality = item.quality - 1
 
-    @staticmethod
     def reduce_sell_by_date(item):
         item.sell_in = item.sell_in - 1
 
-    @staticmethod
     def adjust_quality_post_sell_date(item):
         if item.quality > 0:
             item.quality = item.quality - 1
 
 
 class AgedBrieUpdater(DefaultUpdater):
-    @staticmethod
     def apply_initial_quality_change(item):
         if item.quality < 50:
             item.quality = item.quality + 1
@@ -38,7 +34,6 @@ class AgedBrieUpdater(DefaultUpdater):
 
 
 class BackstagePassUpdater(DefaultUpdater):
-    @staticmethod
     def apply_initial_quality_change(item):
         if item.quality >= 50:
             return
@@ -56,17 +51,14 @@ class BackstagePassUpdater(DefaultUpdater):
 
 
 class SulfurasHandOfRaggnarosUpdater(DefaultUpdater):
-    @staticmethod
     def apply_initial_quality_change(item):
         "Legendary item does not decrease in quality."
         pass
 
-    @staticmethod
     def reduce_sell_by_date(item):
         "Legendary item does not decrease its sell-in date."
         pass
 
-    @staticmethod
     def adjust_quality_post_sell_date(item):
         pass
 
