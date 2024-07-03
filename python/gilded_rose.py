@@ -20,12 +20,8 @@ class GildedRose(object):
 class DefaultUpdater:
     @classmethod
     def change_all(cls, item):
-        item.sell_in = cls.new_sell_in(item)
+        item.sell_in -= 1
         item.quality = clamp(cls.new_quality(item), lower=0, upper=MAX_QUALITY)
-
-    @classmethod
-    def new_sell_in(cls, item):
-        return item.sell_in - 1
 
     @classmethod
     def new_quality(cls, item):
