@@ -34,6 +34,11 @@ class AppreciateWithAgeUpdater(DefaultUpdater):
 
 
 class AgedBrieUpdater(AppreciateWithAgeUpdater):
+    @staticmethod
+    def apply_initial_quality_change(item):
+        if item.quality < 50:
+            item.quality = item.quality + 1
+
     def adjust_quality_post_sell_date(item):
         if item.quality < 50:
             item.quality = item.quality + 1
