@@ -7,7 +7,22 @@ class GildedRose(object):
 
     def update_quality(self):
         for item in self.items:
-            update_item_quality(item)
+            updater = {
+                "Backstage passes to a TAFKAL80ETC concert": BackstagePassUpdater,
+                "Aged Brie": AgedBrieUpdater,
+                "Sulfuras, Hand of Ragnaros": SulfurasHandOfRaggnarosUpdater,
+            }.get(item.name, DefaultUpdater)
+
+            # Apply quality change
+            updater.apply_initial_quality_change(item)
+
+            # Apply sell_by change
+            updater.reduce_sell_by_date(item)
+
+            # Adjust quality after sell by date
+            if item.sell_in < 0:
+                # We need to sell it!
+                updater.adjust_quality_post_sell_date(item)
 
 
 class DefaultUpdater:
@@ -61,29 +76,6 @@ class SulfurasHandOfRaggnarosUpdater(DefaultUpdater):
 
     def adjust_quality_post_sell_date(item):
         pass
-
-
-def update_item_quality(item):
-    """
-    Apply the update rule for the day.
-    """
-
-    updater = {
-        "Backstage passes to a TAFKAL80ETC concert": BackstagePassUpdater,
-        "Aged Brie": AgedBrieUpdater,
-        "Sulfuras, Hand of Ragnaros": SulfurasHandOfRaggnarosUpdater,
-    }.get(item.name, DefaultUpdater)
-
-    # Apply quality change
-    updater.apply_initial_quality_change(item)
-
-    # Apply sell_by change
-    updater.reduce_sell_by_date(item)
-
-    # Adjust quality after sell by date
-    if item.sell_in < 0:
-        # We need to sell it!
-        updater.adjust_quality_post_sell_date(item)
 
 
 def is_item_that_appreciates(item):
