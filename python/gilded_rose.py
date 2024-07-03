@@ -27,10 +27,7 @@ class DefaultUpdater:
 
 
 class SpecialCaseUpdater(DefaultUpdater):
-    @staticmethod
-    def adjust_quality_post_sell_date(item):
-        if item.quality > 0:
-            item.quality = item.quality - 1
+    pass
 
 
 class AppreciateWithAgeUpdater(SpecialCaseUpdater):
