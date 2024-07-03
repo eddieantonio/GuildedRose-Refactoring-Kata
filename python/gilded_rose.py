@@ -23,8 +23,7 @@ class DefaultUpdater:
     @staticmethod
     def adjust_quality_post_sell_date(item):
         if item.quality > 0:
-            if item.name != "Sulfuras, Hand of Ragnaros":
-                item.quality = item.quality - 1
+            item.quality = item.quality - 1
 
 
 class SpecialCaseUpdater(DefaultUpdater):
