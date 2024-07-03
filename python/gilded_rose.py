@@ -10,7 +10,7 @@ class GildedRose(object):
             updater = {
                 "Backstage passes to a TAFKAL80ETC concert": BackstagePassUpdater,
                 "Aged Brie": AgedBrieUpdater,
-                "Sulfuras, Hand of Ragnaros": SulfurasHandOfRaggnarosUpdater,
+                "Sulfuras, Hand of Ragnaros": LegendaryItemUpdater,
             }.get(item.name, DefaultUpdater)
 
             # Apply quality change
@@ -65,13 +65,13 @@ class BackstagePassUpdater(DefaultUpdater):
         item.quality = item.quality - item.quality
 
 
-class SulfurasHandOfRaggnarosUpdater(DefaultUpdater):
+class LegendaryItemUpdater(DefaultUpdater):
+    "Legendary items do not change in quality, nor do they need to be sold by any date."
+
     def apply_initial_quality_change(item):
-        "Legendary item does not decrease in quality."
         pass
 
     def reduce_sell_by_date(item):
-        "Legendary item does not decrease its sell-in date."
         pass
 
     def adjust_quality_post_sell_date(item):
