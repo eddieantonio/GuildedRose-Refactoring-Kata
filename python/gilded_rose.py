@@ -30,7 +30,9 @@ class SpecialCaseUpdater(DefaultUpdater):
     @staticmethod
     def adjust_quality_post_sell_date(item):
         if item.quality > 0:
-            if item.name != "Sulfuras, Hand of Ragnaros":
+            if item.name == "Sulfuras, Hand of Ragnaros":
+                pass
+            else:
                 item.quality = item.quality - 1
 
 
