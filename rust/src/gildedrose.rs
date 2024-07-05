@@ -48,9 +48,12 @@ fn update_item(item: &mut Item) {
 
     let is_aged_brie = item.name == "Aged Brie";
     let is_backstage_pass = item.name == "Backstage passes to a TAFKAL80ETC concert";
+    let is_conjured = item.name.starts_with("Conjured");
 
     let change_in_quality = if is_aged_brie {
         if item.sell_in < 0 { 2 } else { 1 }
+    } else if is_conjured {
+        if item.sell_in < 0 { -4 } else { -2 }
     } else if is_backstage_pass {
         match item.sell_in {
             x if x < 0 => -item.quality,
