@@ -39,8 +39,9 @@ impl GildedRose {
 
 fn update_item(item: &mut Item) {
     let is_aged_brie = item.name == "Aged Brie";
+    let is_backstage_pass = item.name == "Backstage passes to a TAFKAL80ETC concert";
 
-    if !is_aged_brie && item.name != "Backstage passes to a TAFKAL80ETC concert" {
+    if !is_aged_brie && !is_backstage_pass {
         if item.quality > 0 {
             if item.name != "Sulfuras, Hand of Ragnaros" {
                 item.quality -= 1;
@@ -50,7 +51,7 @@ fn update_item(item: &mut Item) {
         if item.quality < 50 {
             item.quality += 1;
 
-            if item.name == "Backstage passes to a TAFKAL80ETC concert" {
+            if is_backstage_pass {
                 if item.sell_in < 11 {
                     if item.quality < 50 {
                         item.quality += 1;
@@ -72,7 +73,7 @@ fn update_item(item: &mut Item) {
 
     if item.sell_in < 0 {
         if !is_aged_brie {
-            if item.name != "Backstage passes to a TAFKAL80ETC concert" {
+            if !is_backstage_pass {
                 if item.quality > 0 {
                     if item.name != "Sulfuras, Hand of Ragnaros" {
                         item.quality -= 1;
