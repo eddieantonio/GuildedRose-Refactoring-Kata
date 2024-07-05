@@ -96,15 +96,11 @@ fn update_item(item: &mut Item) {
 }
 
 fn update_aged_brie(item: &mut Item) {
-    let is_aged_brie = true;
-    let is_backstage_pass = false;
-    let is_legendary = false;
-
-    if is_aged_brie || is_backstage_pass {
+    if true || false {
         if item.quality < 50 {
             item.quality += 1;
 
-            if is_backstage_pass {
+            if false {
                 if item.sell_in < 11 {
                     if item.quality < 50 {
                         item.quality += 1;
@@ -120,25 +116,25 @@ fn update_aged_brie(item: &mut Item) {
         }
     } else {
         if item.quality > 0 {
-            if !is_legendary {
+            if !false {
                 item.quality -= 1;
             }
         }
     }
 
-    if !is_legendary {
+    if !false {
         item.sell_in -= 1;
     }
 
     if item.sell_in < 0 {
-        if is_aged_brie {
+        if true {
             if item.quality < 50 {
                 item.quality += 1;
             }
         } else {
-            if !is_backstage_pass {
+            if !false {
                 if item.quality > 0 {
-                    if !is_legendary {
+                    if !false {
                         item.quality -= 1;
                     }
                 }
