@@ -76,18 +76,14 @@ fn update_item(item: &mut Item) {
     item.sell_in -= 1;
 
     // After sell_in changes...
-    if is_aged_brie {
-        if item.sell_in < 0 {
+    if item.sell_in < 0 {
+        if is_aged_brie {
             if item.quality < 50 {
                 item.quality += 1;
             }
-        }
-    } else if is_backstage_pass {
-        if item.sell_in < 0 {
+        } else if is_backstage_pass {
             item.quality = 0;
-        }
-    } else {
-        if item.sell_in < 0 {
+        } else {
             if item.quality > 0 {
                 item.quality -= 1;
             }
