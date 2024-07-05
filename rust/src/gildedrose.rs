@@ -45,12 +45,15 @@ fn update_item(item: &mut Item) {
     }
 
     item.sell_in -= 1;
+    item.quality = (item.quality + change_in_quality(&item)).max(0).min(50);
+}
 
+fn change_in_quality(item: &Item) -> i32 {
     let is_aged_brie = item.name == "Aged Brie";
     let is_backstage_pass = item.name == "Backstage passes to a TAFKAL80ETC concert";
     let is_conjured = item.name.starts_with("Conjured");
 
-    let change_in_quality = if is_aged_brie {
+    if is_aged_brie {
         if item.sell_in < 0 { 2 } else { 1 }
     } else if is_conjured {
         if item.sell_in < 0 { -4 } else { -2 }
@@ -61,10 +64,11 @@ fn update_item(item: &mut Item) {
             x if x < 10 => 2,
             _ => 1,
         }
+    } else if item.sell_in < 0 {
+        -2
     } else {
-        if item.sell_in < 0 { -2 } else { -1 }
-    };
-    item.quality = (item.quality + change_in_quality).max(0).min(50);
+        -1
+    }
 }
 
 #[cfg(test)]
