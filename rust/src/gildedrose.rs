@@ -83,20 +83,14 @@ fn update_item(item: &mut Item) {
     }
 
     if item.quality > 0 {
-        if !is_legendary {
-            item.quality -= 1;
-        }
+        item.quality -= 1;
     }
 
-    if !is_legendary {
-        item.sell_in -= 1;
-    }
+    item.sell_in -= 1;
 
     if item.sell_in < 0 {
         if item.quality > 0 {
-            if !is_legendary {
-                item.quality -= 1;
-            }
+            item.quality -= 1;
         }
     }
 }
