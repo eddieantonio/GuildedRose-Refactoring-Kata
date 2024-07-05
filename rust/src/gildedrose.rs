@@ -78,7 +78,32 @@ fn update_item(item: &mut Item) {
             item.quality = 0;
         }
         return;
+    } else if is_legendary {
+        update_legendary_item(item);
+        return;
     }
+
+    if item.quality > 0 {
+        if !is_legendary {
+            item.quality -= 1;
+        }
+    }
+
+    if !is_legendary {
+        item.sell_in -= 1;
+    }
+
+    if item.sell_in < 0 {
+        if item.quality > 0 {
+            if !is_legendary {
+                item.quality -= 1;
+            }
+        }
+    }
+}
+
+fn update_legendary_item(item: &mut Item) {
+    let is_legendary = true;
 
     if item.quality > 0 {
         if !is_legendary {
