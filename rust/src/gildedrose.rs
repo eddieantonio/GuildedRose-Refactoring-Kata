@@ -73,7 +73,11 @@ fn update_item(item: &mut Item) {
     }
 
     if item.sell_in < 0 {
-        if !is_aged_brie {
+        if is_aged_brie {
+            if item.quality < 50 {
+                item.quality += 1;
+            }
+        } else {
             if !is_backstage_pass {
                 if item.quality > 0 {
                     if !is_legendary {
@@ -82,10 +86,6 @@ fn update_item(item: &mut Item) {
                 }
             } else {
                 item.quality = 0;
-            }
-        } else {
-            if item.quality < 50 {
-                item.quality += 1;
             }
         }
     }
