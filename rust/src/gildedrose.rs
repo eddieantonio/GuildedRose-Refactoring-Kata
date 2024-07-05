@@ -154,4 +154,23 @@ mod tests {
         assert_eq!(80, rose.items[0].quality);
         assert_eq!(30, rose.items[0].sell_in);
     }
+
+    #[test]
+    pub fn test_conjured_item() {
+        let mut rose = GildedRose::new(vec![
+            Item::new("Conjured Dagger", 30, 10),
+            Item::new("Conjured Dagger", 0, 10),
+            Item::new("Conjured Dagger", 30, 1),
+            Item::new("Conjured Dagger", 0, 1),
+        ]);
+        rose.update_quality();
+        assert_eq!(8, rose.items[0].quality);
+        assert_eq!(29, rose.items[0].sell_in);
+        assert_eq!(6, rose.items[1].quality);
+        assert_eq!(-1, rose.items[1].sell_in);
+        assert_eq!(0, rose.items[2].quality);
+        assert_eq!(29, rose.items[2].sell_in);
+        assert_eq!(0, rose.items[3].quality);
+        assert_eq!(-1, rose.items[3].sell_in);
+    }
 }
