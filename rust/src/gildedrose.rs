@@ -52,7 +52,12 @@ fn update_item(item: &mut Item) {
     let change_in_quality = if is_aged_brie {
         if item.sell_in < 0 { 2 } else { 1 }
     } else if is_backstage_pass {
-        if item.sell_in < 0 { -item.quality } else if item.sell_in < 5 { 3 } else if item.sell_in < 10 { 2 } else { 1 }
+        match item.sell_in {
+            x if x < 0 => -item.quality,
+            x if x < 5 => 3,
+            x if x < 10 => 2,
+            _ => 1,
+        }
     } else {
         if item.sell_in < 0 { -2 } else { -1 }
     };
