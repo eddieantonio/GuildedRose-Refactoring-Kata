@@ -42,13 +42,7 @@ fn update_item(item: &mut Item) {
     let is_backstage_pass = item.name == "Backstage passes to a TAFKAL80ETC concert";
     let is_legendary = item.name == "Sulfuras, Hand of Ragnaros";
 
-    if !is_aged_brie && !is_backstage_pass {
-        if item.quality > 0 {
-            if !is_legendary {
-                item.quality -= 1;
-            }
-        }
-    } else {
+    if is_aged_brie || is_backstage_pass {
         if item.quality < 50 {
             item.quality += 1;
 
@@ -64,6 +58,12 @@ fn update_item(item: &mut Item) {
                         item.quality += 1;
                     }
                 }
+            }
+        }
+    } else {
+        if item.quality > 0 {
+            if !is_legendary {
+                item.quality -= 1;
             }
         }
     }
