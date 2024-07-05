@@ -37,6 +37,56 @@ impl GildedRose {
     }
 }
 
+trait ChangeInQuality {
+    fn change_in_quality(&self, sell_in: i32) -> i32;
+}
+
+struct OrdinaryItem;
+struct BackstagePass;
+struct ConjuredItem;
+struct AgedBrie;
+
+impl ChangeInQuality for OrdinaryItem {
+    fn change_in_quality(&self, sell_in: i32) -> i32 {
+        if sell_in < 0 {
+            -2
+        } else {
+            -1
+        }
+    }
+}
+
+impl ChangeInQuality for AgedBrie {
+    fn change_in_quality(&self, sell_in: i32) -> i32 {
+        if sell_in < 0 {
+            2
+        } else {
+            1
+        }
+    }
+}
+
+impl ChangeInQuality for BackstagePass {
+    fn change_in_quality(&self, sell_in: i32) -> i32 {
+        match sell_in {
+            x if x < 0 => -50,
+            x if x < 5 => 3,
+            x if x < 10 => 2,
+            _ => 1,
+        }
+    }
+}
+
+impl ChangeInQuality for ConjuredItem {
+    fn change_in_quality(&self, sell_in: i32) -> i32 {
+        if sell_in < 0 {
+            -4
+        } else {
+            -2
+        }
+    }
+}
+
 
 fn update_item(item: &mut Item) {
     let is_legendary = item.name == "Sulfuras, Hand of Ragnaros";
@@ -46,25 +96,14 @@ fn update_item(item: &mut Item) {
 
     item.sell_in -= 1;
 
-    let is_aged_brie = item.name == "Aged Brie";
-    let is_backstage_pass = item.name == "Backstage passes to a TAFKAL80ETC concert";
-    let is_conjured = item.name.starts_with("Conjured");
-
-    let change_in_quality = if is_aged_brie {
-        if item.sell_in < 0 { 2 } else { 1 }
-    } else if is_conjured {
-        if item.sell_in < 0 { -4 } else { -2 }
-    } else if is_backstage_pass {
-        match item.sell_in {
-            x if x < 0 => -item.quality,
-            x if x < 5 => 3,
-            x if x < 10 => 2,
-            _ => 1,
-        }
-    } else {
-        if item.sell_in < 0 { -2 } else { -1 }
+    let foo: Box<dyn ChangeInQuality> = match item.name.as_str() {
+        "Aged Brie" => Box::new(AgedBrie),
+        "Backstage passes to a TAFKAL80ETC concert" => Box::new(BackstagePass),
+        x if x.starts_with("Conjured") => Box::new(ConjuredItem),
+        _ => Box::new(OrdinaryItem),
     };
-    item.quality = (item.quality + change_in_quality).max(0).min(50);
+
+    item.quality = (item.quality + foo.change_in_quality(item.sell_in)).max(0).min(50);
 }
 
 #[cfg(test)]
