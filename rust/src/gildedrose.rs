@@ -43,7 +43,18 @@ fn update_item(item: &mut Item) {
     let is_legendary = item.name == "Sulfuras, Hand of Ragnaros";
 
     if is_aged_brie {
-        return update_aged_brie(item);
+        if item.quality < 50 {
+            item.quality += 1;
+        }
+
+        item.sell_in -= 1;
+
+        if item.sell_in < 0 {
+            if item.quality < 50 {
+                item.quality += 1;
+            }
+        }
+        return;
     }
 
     if is_aged_brie || is_backstage_pass {
@@ -95,19 +106,7 @@ fn update_item(item: &mut Item) {
     }
 }
 
-fn update_aged_brie(item: &mut Item) {
-    if item.quality < 50 {
-        item.quality += 1;
-    }
 
-    item.sell_in -= 1;
-
-    if item.sell_in < 0 {
-        if item.quality < 50 {
-            item.quality += 1;
-        }
-    }
-}
 
 #[cfg(test)]
 mod tests {
