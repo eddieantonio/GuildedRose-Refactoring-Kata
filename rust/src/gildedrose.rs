@@ -103,6 +103,7 @@ mod tests {
         let mut rose = GildedRose::new(vec![Item::new("Dull Dagger", -1, 10)]);
         rose.update_quality();
         assert_eq!(8, rose.items[0].quality);
+        assert_eq!(-2, rose.items[0].sell_in);
     }
 
     #[test]
@@ -113,7 +114,9 @@ mod tests {
         ]);
         rose.update_quality();
         assert_eq!(0, rose.items[0].quality);
+        assert_eq!(29, rose.items[0].sell_in);
         assert_eq!(0, rose.items[1].quality);
+        assert_eq!(-2, rose.items[1].sell_in);
     }
 
     #[test]
@@ -124,7 +127,9 @@ mod tests {
         ]);
         rose.update_quality();
         assert_eq!(11, rose.items[0].quality);
+        assert_eq!(29, rose.items[0].sell_in);
         assert_eq!(12, rose.items[1].quality);
+        assert_eq!(-2, rose.items[1].sell_in);
     }
 
     #[test]
@@ -135,7 +140,9 @@ mod tests {
         ]);
         rose.update_quality();
         assert_eq!(50, rose.items[0].quality);
+        assert_eq!(29, rose.items[0].sell_in);
         assert_eq!(50, rose.items[1].quality);
+        assert_eq!(-2, rose.items[1].sell_in);
     }
 
     #[test]
@@ -149,10 +156,15 @@ mod tests {
         ]);
         rose.update_quality();
         assert_eq!(11, rose.items[0].quality);
+        assert_eq!(29, rose.items[0].sell_in);
         assert_eq!(12, rose.items[1].quality);
+        assert_eq!(8, rose.items[1].sell_in);
         assert_eq!(13, rose.items[2].quality);
+        assert_eq!(4, rose.items[2].sell_in);
         assert_eq!(13, rose.items[3].quality);
+        assert_eq!(0, rose.items[3].sell_in);
         assert_eq!(0, rose.items[4].quality);
+        assert_eq!(-1, rose.items[4].sell_in);
     }
 
     #[test]
