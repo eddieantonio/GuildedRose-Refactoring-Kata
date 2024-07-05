@@ -42,6 +42,10 @@ fn update_item(item: &mut Item) {
     let is_backstage_pass = item.name == "Backstage passes to a TAFKAL80ETC concert";
     let is_legendary = item.name == "Sulfuras, Hand of Ragnaros";
 
+    if is_aged_brie {
+        return update_aged_brie(item);
+    }
+
     if is_aged_brie || is_backstage_pass {
         if item.quality < 50 {
             item.quality += 1;
@@ -91,6 +95,59 @@ fn update_item(item: &mut Item) {
     }
 }
 
+fn update_aged_brie(item: &mut Item) {
+    let is_aged_brie = true;
+    let is_backstage_pass = false;
+    let is_legendary = false;
+
+    if is_aged_brie || is_backstage_pass {
+        if item.quality < 50 {
+            item.quality += 1;
+
+            if is_backstage_pass {
+                if item.sell_in < 11 {
+                    if item.quality < 50 {
+                        item.quality += 1;
+                    }
+                }
+
+                if item.sell_in < 6 {
+                    if item.quality < 50 {
+                        item.quality += 1;
+                    }
+                }
+            }
+        }
+    } else {
+        if item.quality > 0 {
+            if !is_legendary {
+                item.quality -= 1;
+            }
+        }
+    }
+
+    if !is_legendary {
+        item.sell_in -= 1;
+    }
+
+    if item.sell_in < 0 {
+        if is_aged_brie {
+            if item.quality < 50 {
+                item.quality += 1;
+            }
+        } else {
+            if !is_backstage_pass {
+                if item.quality > 0 {
+                    if !is_legendary {
+                        item.quality -= 1;
+                    }
+                }
+            } else {
+                item.quality = 0;
+            }
+        }
+    }
+}
 
 #[cfg(test)]
 mod tests {
