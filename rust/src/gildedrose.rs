@@ -79,7 +79,6 @@ fn update_item(item: &mut Item) {
         }
         return;
     } else if is_legendary {
-        update_legendary_item(item);
         return;
     }
 
@@ -101,10 +100,6 @@ fn update_item(item: &mut Item) {
         }
     }
 }
-
-fn update_legendary_item(_item: &mut Item) {
-}
-
 
 #[cfg(test)]
 mod tests {
