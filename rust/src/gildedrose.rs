@@ -39,15 +39,15 @@ impl GildedRose {
 
 
 fn update_item(item: &mut Item) {
-    let is_aged_brie = item.name == "Aged Brie";
-    let is_backstage_pass = item.name == "Backstage passes to a TAFKAL80ETC concert";
     let is_legendary = item.name == "Sulfuras, Hand of Ragnaros";
-
     if is_legendary {
         return;
     }
 
     item.sell_in -= 1;
+
+    let is_aged_brie = item.name == "Aged Brie";
+    let is_backstage_pass = item.name == "Backstage passes to a TAFKAL80ETC concert";
 
     let change_in_quality = if is_aged_brie {
         if item.sell_in < 0 { 2 } else { 1 }
