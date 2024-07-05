@@ -37,6 +37,7 @@ impl GildedRose {
     }
 }
 
+
 fn update_item(item: &mut Item) {
     let is_aged_brie = item.name == "Aged Brie";
     let is_backstage_pass = item.name == "Backstage passes to a TAFKAL80ETC concert";
@@ -46,49 +47,16 @@ fn update_item(item: &mut Item) {
         return;
     }
 
-    // Before sell_in changes...
-    if is_aged_brie {
-        if item.quality < 50 {
-            item.quality += 1;
-        }
-    } else if is_backstage_pass {
-        if item.quality < 50 {
-            item.quality += 1;
-
-            if item.sell_in < 11 {
-                if item.quality < 50 {
-                    item.quality += 1;
-                }
-            }
-
-            if item.sell_in < 6 {
-                if item.quality < 50 {
-                    item.quality += 1;
-                }
-            }
-        }
-    } else {
-        if item.quality > 0 {
-            item.quality -= 1;
-        }
-    }
-
     item.sell_in -= 1;
 
-    // After sell_in changes...
-    if item.sell_in < 0 {
-        if is_aged_brie {
-            if item.quality < 50 {
-                item.quality += 1;
-            }
-        } else if is_backstage_pass {
-            item.quality = 0;
-        } else {
-            if item.quality > 0 {
-                item.quality -= 1;
-            }
-        }
-    }
+    let change_in_quality = if is_aged_brie {
+        if item.sell_in < 0 { 2 } else { 1 }
+    } else if is_backstage_pass {
+        if item.sell_in < 0 { -item.quality } else if item.sell_in < 5 { 3 } else if item.sell_in < 10 { 2 } else { 1 }
+    } else {
+        if item.sell_in < 0 { -2 } else { -1 }
+    };
+    item.quality = (item.quality + change_in_quality).max(0).min(50);
 }
 
 #[cfg(test)]
